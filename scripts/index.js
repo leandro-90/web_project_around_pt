@@ -70,6 +70,68 @@ function handleProfileFormSubmit(evt) {
   closeModal(editPopup);
 }
 
+function handleLikeButtonClick(evt) {
+  evt.target.classList.toggle("card__like-button_is-active");
+}
+
+function handleDeleteButtonClick(evt) {
+  evt.target.closest(".card").remove();
+}
+
+function handleImageClick(name, link) {
+  const imagePopup = document.querySelector("#image-popup");
+  const popupImage = imagePopup.querySelector(".popup__image");
+  const popupCaption = imagePopup.querySelector(".popup__caption");
+
+  popupImage.src = link;
+  popupImage.alt = name;
+  popupCaption.textContent = name;
+  openModal(imagePopup);
+}
+
+function getCardElement({
+  name = "Lugar sem nome",
+  link = "./images/placeholder.jpg",
+} = {}) {
+  const cardElement = document
+    .querySelector("#card-template")
+    .content.querySelector(".card")
+    .cloneNode(true);
+  const cardImage = cardElement.querySelector(".card__image");
+  const cardTitle = cardElement.querySelector(".card__title");
+
+  cardImage.src = link;
+  cardImage.alt = name;
+  cardTitle.textContent = name;
+  cardElement
+    .querySelector(".card__like-button")
+    .addEventListener("click", handleLikeButtonClick);
+  cardElement
+    .querySelector(".card__delete-button")
+    .addEventListener("click", handleDeleteButtonClick);
+  cardImage.addEventListener("click", () => handleImageClick(name, link));
+
+  return cardElement;
+}
+
+function renderCard(name, link, container) {
+  container.prepend(getCardElement({ name, link }));
+}
+
+function handleCardFormSubmit(evt) {
+  evt.preventDefault();
+
+  const cardForm = evt.target;
+  const cardPopup = document.querySelector("#new-card-popup");
+  renderCard(
+    cardForm.elements["place-name"].value,
+    cardForm.elements.link.value,
+    document.querySelector(".cards__list"),
+  );
+  cardForm.reset();
+  closeModal(cardPopup);
+}
+
 const editProfileButton = document.querySelector(".profile__edit-button");
 editProfileButton.addEventListener("click", handleOpenEditModal);
 
@@ -84,6 +146,23 @@ editPopupCloseButton.addEventListener("click", () => {
 const editProfileForm = document.querySelector("#edit-profile-form");
 editProfileForm.addEventListener("submit", handleProfileFormSubmit);
 
+const newCardPopup = document.querySelector("#new-card-popup");
+document
+  .querySelector(".profile__add-button")
+  .addEventListener("click", () => openModal(newCardPopup));
+newCardPopup
+  .querySelector(".popup__close")
+  .addEventListener("click", () => closeModal(newCardPopup));
+document
+  .querySelector("#new-card-form")
+  .addEventListener("submit", handleCardFormSubmit);
+
+const imagePopup = document.querySelector("#image-popup");
+imagePopup
+  .querySelector(".popup__close")
+  .addEventListener("click", () => closeModal(imagePopup));
+
+const cardsList = document.querySelector(".cards__list");
 initialCards.forEach((card) => {
-  console.log(card.name);
+  renderCard(card.name, card.link, cardsList);
 });
