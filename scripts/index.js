@@ -98,16 +98,14 @@ function getCardElement({
   );
   const cardImage = cardElement.querySelector(".card__image");
   const cardTitle = cardElement.querySelector(".card__title");
+  const likeButton = cardElement.querySelector(".card__like-button");
+  const deleteButton = cardElement.querySelector(".card__delete-button");
 
   cardImage.src = link;
   cardImage.alt = name;
   cardTitle.textContent = name;
-  cardElement
-    .querySelector(".card__like-button")
-    .addEventListener("click", handleLikeButtonClick);
-  cardElement
-    .querySelector(".card__delete-button")
-    .addEventListener("click", handleDeleteButtonClick);
+  likeButton.addEventListener("click", handleLikeButtonClick);
+  deleteButton.addEventListener("click", handleDeleteButtonClick);
   cardImage.addEventListener("click", () => handleImageClick(name, link));
 
   return cardElement;
