@@ -14,7 +14,3 @@ Projeto de uma página interativa para compartilhar lugares interessantes.
 - HTML5
 - CSS3
 - JavaScript
-
-## Projeto
-
-Repositório: https://github.com/leandro-90/web_project_around_pt
