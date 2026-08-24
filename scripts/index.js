@@ -92,8 +92,10 @@ function getCardElement({
   name = "Lugar sem nome",
   link = "./images/placeholder.jpg",
 } = {}) {
-  const cardElement = document
-    .importNode(cardTemplate.content.querySelector(".card"), true);
+  const cardElement = document.importNode(
+    cardTemplate.content.querySelector(".card"),
+    true,
+  );
   const cardImage = cardElement.querySelector(".card__image");
   const cardTitle = cardElement.querySelector(".card__title");
 
