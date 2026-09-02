@@ -19,7 +19,7 @@ Aplicacao web responsiva para compartilhar lugares interessantes por meio de um 
 - `document.importNode()` para criar cartoes a partir de template.
 - Interacao com imagens e controles sem dependencias externas.
 
-## Organizacao
+## Organização
 
 - `index.html`: estrutura da pagina e templates.
 - `blocks/`: estilos dos blocos BEM.
@@ -27,10 +27,10 @@ Aplicacao web responsiva para compartilhar lugares interessantes por meio de um 
 - `scripts/index.js`: comportamento e renderizacao dos cartoes.
 - `images/` e `vendor/`: imagens, icones e fontes locais.
 
-## Como executar
+## Como executar?
 
 Abra `index.html` em um navegador ou sirva a pasta com qualquer servidor estatico.
 
-## Projeto publicado
+## Projeto
 
 https://leandro-90.github.io/web_project_around_pt/
