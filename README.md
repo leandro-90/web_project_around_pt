@@ -1,19 +1,36 @@
 # Around The U.S.
 
-Projeto de uma página interativa para compartilhar lugares interessantes.
+Aplicacao web responsiva para compartilhar lugares interessantes por meio de um perfil e uma galeria de cartoes. Este projeto pratica manipulacao do DOM, formularios e componentes interativos no navegador.
 
 ## Funcionalidades
 
-- Editar o nome e a descrição do perfil.
-- Adicionar novos cartões com imagem e título.
-- Curtir e excluir cartões.
-- Visualizar imagens ampliadas em um pop-up.
+- Editar nome e descricao do perfil em um modal.
+- Adicionar cartoes com nome do lugar e URL da imagem.
+- Curtir e excluir cartoes.
+- Abrir imagens em tamanho ampliado com legenda.
+- Limpar e reutilizar formularios apos o envio.
+- Exibir cartoes iniciais com lugares pre-cadastrados.
 
-## Tecnologias
+## Tecnologias e praticas
 
-- HTML5
-- CSS3
-- JavaScript
+- HTML5 semantico e formularios.
+- CSS3 responsivo com metodologia BEM.
+- JavaScript moderno para eventos, DOM, templates e modais.
+- `document.importNode()` para criar cartoes a partir de template.
+- Interacao com imagens e controles sem dependencias externas.
 
+## Organizacao
 
-Site: https://leandro-90.github.io/web_project_around_pt/
+- `index.html`: estrutura da pagina e templates.
+- `blocks/`: estilos dos blocos BEM.
+- `pages/index.css`: ponto de entrada dos estilos.
+- `scripts/index.js`: comportamento e renderizacao dos cartoes.
+- `images/` e `vendor/`: imagens, icones e fontes locais.
+
+## Como executar
+
+Abra `index.html` em um navegador ou sirva a pasta com qualquer servidor estatico.
+
+## Projeto publicado
+
+https://leandro-90.github.io/web_project_around_pt/
