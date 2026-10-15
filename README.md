@@ -245,22 +245,6 @@ O site está publicado com o **GitHub Pages**. Para publicar a sua própria cóp
 
 ---
 
-## 📈 Roadmap
-
-Melhorias planejadas para as próximas versões:
-
-- [ ] Fechar os modais com a tecla **Esc** e com clique no fundo (*overlay*).
-- [ ] Validação de formulários com mensagens de erro personalizadas.
-- [ ] Persistir perfil e cartões com `localStorage`.
-- [ ] Animações de abertura e fechamento dos modais.
-- [ ] Refatorar a lógica em classes ou módulos ES (`import` / `export`).
-- [ ] Integração com uma API para carregar e salvar os dados.
-- [ ] Testes automatizados e verificação de acessibilidade (Lighthouse).
-
-<p align="right"><a href="#readme-topo">⬆ voltar ao topo</a></p>
-
----
-
 ## 🤝 Como contribuir
 
 Sugestões e correções são bem-vindas.
