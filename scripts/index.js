@@ -29,7 +29,6 @@ function openModal(modal) {
   modal.classList.add("popup_is-opened");
 }
 
-// Função para fechar o modal
 function closeModal(modal) {
   modal.classList.remove("popup_is-opened");
 }
@@ -146,4 +145,32 @@ imagePopupCloseButton.addEventListener("click", () => closeModal(imagePopup));
 
 initialCards.forEach((card) => {
   renderCard(card.name, card.link, cardsList);
+});
+
+// Seleciona todos os formulários pelo sua CLASSE.
+const forms = [...document.getElementsByClassName("popup__form")];
+// const objetc = {};
+
+// Percorre todos os elementos de form.
+forms.forEach((form, i) => {
+  // Seleciona todos os elementos que vamos trabalhar.
+  const inputs = [...form.getElementsByClassName("popup__input")];
+  const spanError = [...form.getElementsByClassName("popup__error")];
+  const buttons = [...form.getElementsByClassName("popup__button")];
+
+  //  Percorre todos os elementos de entrada de inputs.
+  inputs.forEach((input, i) => {
+    input.addEventListener("input", () => {
+      if ((buttons[0].disabled = !form.checkValidity())) {
+        input.classList.add("popup__input_type_error");
+        spanError[i].classList.remove("popup__error");
+        spanError[i].classList.add("popup__error_visible");
+        spanError[i].textContent = input.validationMessage;
+      } else {
+        input.classList.remove("popup__input_type_error");
+        spanError[i].classList.add("popup__error");
+        spanError[i].textContent = "";
+      }
+    });
+  });
 });
