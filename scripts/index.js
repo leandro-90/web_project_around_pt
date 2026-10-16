@@ -186,13 +186,18 @@ forms.forEach((form, i) => {
 });
 
 popups.forEach((popup) => {
+  // Selecionar todos os que existem no document.
   popup.addEventListener("click", (event) => {
+    // Adicionar evento de click aos popups.
     if (event.target.classList.contains("popup_is-opened")) {
+      // Verifica se os popups estão abertos e remove a classe que os mostra.
       popup.classList.toggle("popup_is-opened");
     }
   });
   document.addEventListener("keydown", (event) => {
+    // Adicionar evento de teclado no docuemnt.
     if (event.key === "Escape") {
+      // Verifica se a tecla pressionada é a tecla ESC e remove o popup aberto.
       popup.classList.remove("popup_is-opened");
     }
   });

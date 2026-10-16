@@ -142,14 +142,6 @@
   cursor: not-allowed;
 }
 
-.popup-hide {
-  display: none;
-}
-
-.popup-display {
-  display: block;
-}
-
 @media screen and (max-width: 544px) {
   .popup {
     bottom: 112px;
