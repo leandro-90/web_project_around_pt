@@ -185,15 +185,15 @@ forms.forEach((form, i) => {
   });
 });
 
-// popups.forEach((popup, i) => {
-//   popup.addEventListener("click", (event) => {
-//     console.log(event.target);
-//     if (event.target !== popup) {
-//       // popup.remove();
-//     }
-//     console.log(buttonEdit[i]);
-//     // if (event.target === ) {
-
-//     // }
-//   });
-// });
+popups.forEach((popup) => {
+  popup.addEventListener("click", (event) => {
+    if (event.target.classList.contains("popup_is-opened")) {
+      popup.classList.toggle("popup_is-opened");
+    }
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      popup.classList.remove("popup_is-opened");
+    }
+  });
+});
