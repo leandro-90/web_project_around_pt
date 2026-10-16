@@ -53,6 +53,7 @@ const popupImage = imagePopup.querySelector(".popup__image");
 const popupCaption = imagePopup.querySelector(".popup__caption");
 const cardTemplate = document.querySelector("#card-template");
 const cardsList = document.querySelector(".cards__list");
+const buttons = [...editProfileForm.getElementsByClassName("popup__button")];
 
 function fillProfileForm() {
   nameInput.value = profileTitle.textContent;
@@ -61,6 +62,11 @@ function fillProfileForm() {
 
 function handleOpenEditModal() {
   fillProfileForm();
+  if (editProfileForm.checkValidity()) {
+    buttons[0].disabled = false;
+  } else {
+    buttons[0].disabled = true;
+  }
   openModal(editPopup);
 }
 
@@ -147,9 +153,10 @@ initialCards.forEach((card) => {
   renderCard(card.name, card.link, cardsList);
 });
 
-// Seleciona todos os formulários pelo sua CLASSE.
+// Seleciona os elementos principais.
+const popups = [...document.getElementsByClassName("popup")];
 const forms = [...document.getElementsByClassName("popup__form")];
-// const objetc = {};
+const buttonEdit = [...document.getElementsByClassName("buttonEdit")];
 
 // Percorre todos os elementos de form.
 forms.forEach((form, i) => {
@@ -158,15 +165,18 @@ forms.forEach((form, i) => {
   const spanError = [...form.getElementsByClassName("popup__error")];
   const buttons = [...form.getElementsByClassName("popup__button")];
 
-  //  Percorre todos os elementos de entrada de inputs.
+  //  Percorre todos os elementos de entrada de inputs e faz sua leitura dos dados.
   inputs.forEach((input, i) => {
     input.addEventListener("input", () => {
-      if ((buttons[0].disabled = !form.checkValidity())) {
+      if (!form.checkValidity()) {
+        // Ativa e desativa o botão submit baseado na leitura dos dados.
+        buttons[0].disabled = true;
         input.classList.add("popup__input_type_error");
         spanError[i].classList.remove("popup__error");
         spanError[i].classList.add("popup__error_visible");
         spanError[i].textContent = input.validationMessage;
       } else {
+        buttons[0].disabled = false;
         input.classList.remove("popup__input_type_error");
         spanError[i].classList.add("popup__error");
         spanError[i].textContent = "";
@@ -174,3 +184,16 @@ forms.forEach((form, i) => {
     });
   });
 });
+
+// popups.forEach((popup, i) => {
+//   popup.addEventListener("click", (event) => {
+//     console.log(event.target);
+//     if (event.target !== popup) {
+//       // popup.remove();
+//     }
+//     console.log(buttonEdit[i]);
+//     // if (event.target === ) {
+
+//     // }
+//   });
+// });
