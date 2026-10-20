@@ -154,51 +154,95 @@ initialCards.forEach((card) => {
 });
 
 // Seleciona os elementos principais.
+// --------------------------------------------------------------------------------------
 const popups = [...document.getElementsByClassName("popup")];
 const forms = [...document.getElementsByClassName("popup__form")];
 const buttonEdit = [...document.getElementsByClassName("buttonEdit")];
 
 // Percorre todos os elementos de form.
-forms.forEach((form, i) => {
+// --------------------------------------------------------------------------------------
+forms.forEach((form) => {
   // Seleciona todos os elementos que vamos trabalhar.
   const inputs = [...form.getElementsByClassName("popup__input")];
   const spanError = [...form.getElementsByClassName("popup__error")];
   const buttons = [...form.getElementsByClassName("popup__button")];
 
   //  Percorre todos os elementos de entrada de inputs e faz sua leitura dos dados.
+  // --------------------------------------------------------------------------------------
   inputs.forEach((input, i) => {
+    // Função para desabilitar o botão do form.
+    const hideButton = (input) => {
+      buttons[0].disabled = true;
+      input.classList.add("popup__input_type_error");
+      spanError[i].classList.add("popup__error_visible");
+      spanError[i].textContent = input.validationMessage;
+    };
+
+    // Função para habilitar o botão do form.
+    const showButton = (input) => {
+      buttons[0].disabled = false;
+      input.classList.remove("popup__input_type_error");
+      spanError[i].classList.remove("popup__error_visible");
+      spanError[i].textContent = "";
+    };
+
+    // Adicionar um evento de click para cada campo de entrada de cada form.
+    // --------------------------------------------------------------------------------------
     input.addEventListener("input", () => {
+      // Ativa e desativa o botão submit baseado na leitura dos dados.
       if (!form.checkValidity()) {
-        // Ativa e desativa o botão submit baseado na leitura dos dados.
-        buttons[0].disabled = true;
-        input.classList.add("popup__input_type_error");
-        spanError[i].classList.remove("popup__error");
-        spanError[i].classList.add("popup__error_visible");
-        spanError[i].textContent = input.validationMessage;
+        hideButton(input);
       } else {
-        buttons[0].disabled = false;
-        input.classList.remove("popup__input_type_error");
-        spanError[i].classList.add("popup__error");
-        spanError[i].textContent = "";
+        showButton(input);
       }
     });
   });
 });
 
-popups.forEach((popup) => {
-  // Selecionar todos os que existem no document.
+// Percorre cada popup de document.
+// --------------------------------------------------------------------------------------
+popups.forEach((popup, i) => {
+  const spanError = [...document.getElementsByClassName("popup__error")];
+  // Função para resetar o formulário.
+  const resertForm = () => {
+    const popupForm = [...popup.getElementsByClassName("popup__form")];
+    const spanError = [...popup.getElementsByClassName("popup__error")];
+    const inputs = [...popup.getElementsByClassName("popup__input")];
+    const buttons = [...popup.getElementsByClassName("popup__button")];
+
+    inputs.forEach((input) => {
+      input.classList.remove("popup__input_type_error");
+    });
+
+    spanError.forEach((spanError) => {
+      spanError.classList.remove("popup__error_visible");
+      spanError.textContent = "";
+      popupForm[0].reset();
+    });
+
+    buttons.forEach((button) => {
+      button.disabled = true;
+    });
+  };
+
+  // Adiciona evento de teclado para cada popup.
+  // --------------------------------------------------------------------------------------
   popup.addEventListener("click", (event) => {
     // Adicionar evento de click aos popups.
     if (event.target.classList.contains("popup_is-opened")) {
       // Verifica se os popups estão abertos e remove a classe que os mostra.
-      popup.classList.toggle("popup_is-opened");
+      popup.classList.remove("popup_is-opened");
+      resertForm();
     }
   });
+
+  // Adicionar evento de teclado no docuemnt.
+  // --------------------------------------------------------------------------------------
   document.addEventListener("keydown", (event) => {
-    // Adicionar evento de teclado no docuemnt.
+    // Verifica se a tecla pressionada é a tecla ESC e remove o popup aberto.
     if (event.key === "Escape") {
-      // Verifica se a tecla pressionada é a tecla ESC e remove o popup aberto.
       popup.classList.remove("popup_is-opened");
+      resertForm();
     }
   });
 });
