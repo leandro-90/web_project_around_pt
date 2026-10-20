@@ -157,7 +157,6 @@ initialCards.forEach((card) => {
 // --------------------------------------------------------------------------------------
 const popups = [...document.getElementsByClassName("popup")];
 const forms = [...document.getElementsByClassName("popup__form")];
-const buttonEdit = [...document.getElementsByClassName("buttonEdit")];
 
 // Percorre todos os elementos de form.
 // --------------------------------------------------------------------------------------
@@ -165,7 +164,6 @@ forms.forEach((form) => {
   // Seleciona todos os elementos que vamos trabalhar.
   const inputs = [...form.getElementsByClassName("popup__input")];
   const spanError = [...form.getElementsByClassName("popup__error")];
-  const buttons = [...form.getElementsByClassName("popup__button")];
 
   //  Percorre todos os elementos de entrada de inputs e faz sua leitura dos dados.
   // --------------------------------------------------------------------------------------
@@ -225,6 +223,16 @@ popups.forEach((popup, i) => {
     });
   };
 
+  // Adicionar evento de teclado no docuemnt.
+  // --------------------------------------------------------------------------------------
+  document.addEventListener("keydown", (event) => {
+    // Verifica se a tecla pressionada é a tecla ESC e remove o popup aberto.
+    if (event.key === "Escape") {
+      popup.classList.remove("popup_is-opened");
+      resertForm();
+    }
+  });
+
   // Adiciona evento de teclado para cada popup.
   // --------------------------------------------------------------------------------------
   popup.addEventListener("click", (event) => {
@@ -235,14 +243,9 @@ popups.forEach((popup, i) => {
       resertForm();
     }
   });
-
-  // Adicionar evento de teclado no docuemnt.
-  // --------------------------------------------------------------------------------------
-  document.addEventListener("keydown", (event) => {
-    // Verifica se a tecla pressionada é a tecla ESC e remove o popup aberto.
-    if (event.key === "Escape") {
-      popup.classList.remove("popup_is-opened");
-      resertForm();
-    }
-  });
 });
+
+// .
+// .
+// .
+// PS: Ignorei as sugestões somente por hora por falta de tempo e decidir focar somente nos erros, no entanto, aprecio as sugestões de vocês e irei aplicar nos devidos projetos. Leandro.
