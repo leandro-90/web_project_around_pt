@@ -31,6 +31,7 @@ function openModal(modal) {
 
 function closeModal(modal) {
   modal.classList.remove("popup_is-opened");
+  clearPopupForm(modal);
 }
 
 const profileTitle = document.querySelector(".profile__title");
@@ -41,19 +42,51 @@ const descriptionInput = document.querySelector(
 );
 const editPopup = document.querySelector("#edit-popup");
 const editProfileButton = document.querySelector(".profile__edit-button");
-const editPopupCloseButton = editPopup.querySelector(".popup__close");
 const editProfileForm = document.querySelector("#edit-profile-form");
 const newCardPopup = document.querySelector("#new-card-popup");
 const newCardButton = document.querySelector(".profile__add-button");
-const newCardPopupCloseButton = newCardPopup.querySelector(".popup__close");
 const newCardForm = document.querySelector("#new-card-form");
 const imagePopup = document.querySelector("#image-popup");
-const imagePopupCloseButton = imagePopup.querySelector(".popup__close");
 const popupImage = imagePopup.querySelector(".popup__image");
 const popupCaption = imagePopup.querySelector(".popup__caption");
 const cardTemplate = document.querySelector("#card-template");
 const cardsList = document.querySelector(".cards__list");
-const buttons = [...editProfileForm.getElementsByClassName("popup__button")];
+const popups = [...document.getElementsByClassName("popup")];
+const forms = [...document.getElementsByClassName("popup__form")];
+
+function showInputError(input) {
+  const errorElement = input.parentElement.querySelector(".popup__error");
+
+  input.classList.add("popup__input_type_error");
+  errorElement.classList.add("popup__error_visible");
+  errorElement.textContent = input.validationMessage;
+}
+
+function hideInputError(input) {
+  const errorElement = input.parentElement.querySelector(".popup__error");
+
+  input.classList.remove("popup__input_type_error");
+  errorElement.classList.remove("popup__error_visible");
+  errorElement.textContent = "";
+}
+
+function updateSubmitButton(form) {
+  const submitButton = form.querySelector(".popup__button");
+
+  submitButton.disabled = !form.checkValidity();
+}
+
+function clearPopupForm(popup) {
+  const form = popup.querySelector(".popup__form");
+
+  if (!form) {
+    return;
+  }
+
+  form.reset();
+  form.querySelectorAll(".popup__input").forEach(hideInputError);
+  form.querySelector(".popup__button").disabled = true;
+}
 
 function fillProfileForm() {
   nameInput.value = profileTitle.textContent;
@@ -62,11 +95,8 @@ function fillProfileForm() {
 
 function handleOpenEditModal() {
   fillProfileForm();
-  if (editProfileForm.checkValidity()) {
-    buttons[0].disabled = false;
-  } else {
-    buttons[0].disabled = true;
-  }
+  editProfileForm.querySelectorAll(".popup__input").forEach(hideInputError);
+  updateSubmitButton(editProfileForm);
   openModal(editPopup);
 }
 
@@ -129,123 +159,56 @@ function handleCardFormSubmit(event) {
     cardForm.elements.link.value,
     cardsList,
   );
-  cardForm.reset();
   closeModal(newCardPopup);
 }
 
 editProfileButton.addEventListener("click", handleOpenEditModal);
-
-editPopupCloseButton.addEventListener("click", () => {
-  closeModal(editPopup);
-});
-
 editProfileForm.addEventListener("submit", handleProfileFormSubmit);
 
-newCardButton.addEventListener("click", () => openModal(newCardPopup));
-newCardPopupCloseButton.addEventListener("click", () =>
-  closeModal(newCardPopup),
-);
+newCardButton.addEventListener("click", () => {
+  clearPopupForm(newCardPopup);
+  openModal(newCardPopup);
+});
 newCardForm.addEventListener("submit", handleCardFormSubmit);
-
-imagePopupCloseButton.addEventListener("click", () => closeModal(imagePopup));
 
 initialCards.forEach((card) => {
   renderCard(card.name, card.link, cardsList);
 });
 
-// Seleciona os elementos principais.
-// --------------------------------------------------------------------------------------
-const popups = [...document.getElementsByClassName("popup")];
-const forms = [...document.getElementsByClassName("popup__form")];
-
-// Percorre todos os elementos de form.
-// --------------------------------------------------------------------------------------
 forms.forEach((form) => {
-  // Seleciona todos os elementos que vamos trabalhar.
-  const inputs = [...form.getElementsByClassName("popup__input")];
-  const spanError = [...form.getElementsByClassName("popup__error")];
+  const inputs = [...form.querySelectorAll(".popup__input")];
 
-  //  Percorre todos os elementos de entrada de inputs e faz sua leitura dos dados.
-  // --------------------------------------------------------------------------------------
-  inputs.forEach((input, i) => {
-    // Função para desabilitar o botão do form.
-    const hideButton = (input) => {
-      buttons[0].disabled = true;
-      input.classList.add("popup__input_type_error");
-      spanError[i].classList.add("popup__error_visible");
-      spanError[i].textContent = input.validationMessage;
-    };
-
-    // Função para habilitar o botão do form.
-    const showButton = (input) => {
-      buttons[0].disabled = false;
-      input.classList.remove("popup__input_type_error");
-      spanError[i].classList.remove("popup__error_visible");
-      spanError[i].textContent = "";
-    };
-
-    // Adicionar um evento de click para cada campo de entrada de cada form.
-    // --------------------------------------------------------------------------------------
+  inputs.forEach((input) => {
     input.addEventListener("input", () => {
-      // Ativa e desativa o botão submit baseado na leitura dos dados.
-      if (!form.checkValidity()) {
-        hideButton(input);
+      if (input.validity.valid) {
+        hideInputError(input);
       } else {
-        showButton(input);
+        showInputError(input);
       }
+
+      updateSubmitButton(form);
     });
   });
 });
 
-// Percorre cada popup de document.
-// --------------------------------------------------------------------------------------
-popups.forEach((popup, i) => {
-  const spanError = [...document.getElementsByClassName("popup__error")];
-  // Função para resetar o formulário.
-  const resertForm = () => {
-    const popupForm = [...popup.getElementsByClassName("popup__form")];
-    const spanError = [...popup.getElementsByClassName("popup__error")];
-    const inputs = [...popup.getElementsByClassName("popup__input")];
-    const buttons = [...popup.getElementsByClassName("popup__button")];
-
-    inputs.forEach((input) => {
-      input.classList.remove("popup__input_type_error");
-    });
-
-    spanError.forEach((spanError) => {
-      spanError.classList.remove("popup__error_visible");
-      spanError.textContent = "";
-      popupForm[0].reset();
-    });
-
-    buttons.forEach((button) => {
-      button.disabled = true;
-    });
-  };
-
-  // Adicionar evento de teclado no docuemnt.
-  // --------------------------------------------------------------------------------------
-  document.addEventListener("keydown", (event) => {
-    // Verifica se a tecla pressionada é a tecla ESC e remove o popup aberto.
-    if (event.key === "Escape") {
-      popup.classList.remove("popup_is-opened");
-      resertForm();
-    }
+popups.forEach((popup) => {
+  popup.querySelector(".popup__close").addEventListener("click", () => {
+    closeModal(popup);
   });
 
-  // Adiciona evento de teclado para cada popup.
-  // --------------------------------------------------------------------------------------
   popup.addEventListener("click", (event) => {
-    // Adicionar evento de click aos popups.
-    if (event.target.classList.contains("popup_is-opened")) {
-      // Verifica se os popups estão abertos e remove a classe que os mostra.
-      popup.classList.remove("popup_is-opened");
-      resertForm();
+    if (event.target === popup) {
+      closeModal(popup);
     }
   });
 });
 
-// .
-// .
-// .
-// PS: Ignorei as sugestões somente por hora por falta de tempo e decidir focar somente nos erros, no entanto, aprecio as sugestões de vocês e irei aplicar nos devidos projetos. Leandro.
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    const openPopup = document.querySelector(".popup_is-opened");
+
+    if (openPopup) {
+      closeModal(openPopup);
+    }
+  }
+});
