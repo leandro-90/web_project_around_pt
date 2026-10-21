@@ -81,12 +81,13 @@ O site já abre com **seis cartões de exemplo**: Vale de Yosemite, Lago Louise,
 
 | Recurso | Descrição |
 | --- | --- |
-| 👤 **Edição de perfil** | Modal com formulário para alterar nome e descrição. Os campos já abrem preenchidos com os valores atuais. |
-| 🖼️ **Novo local** | Modal para criar um cartão com título e link de imagem (ambos obrigatórios; o link é validado como URL). |
+| 👤 **Edição de perfil** | Modal com formulário para alterar nome e descrição. Os campos já abrem preenchidos com os valores atuais, e o botão de envio reflete a validade do formulário. |
+| 🖼️ **Novo local** | Modal para criar um cartão com título e link de imagem. Os campos são validados enquanto o usuário digita, com mensagens de erro junto a cada campo e envio habilitado somente quando o formulário é válido. |
 | ❤️ **Curtir** | Botão de curtir em cada cartão, com estado ativo alternável. |
 | 🗑️ **Excluir** | Remove o cartão da galeria instantaneamente. |
 | 🔍 **Imagem ampliada** | Ao clicar na foto, abre um modal com a imagem em destaque e a legenda. |
 | 🧱 **Cartões dinâmicos** | Cartões gerados por JavaScript a partir de uma lista inicial e de um `<template>` HTML. Os novos aparecem no topo da galeria. |
+| ✕ **Fechamento dos modais** | Fecha pelo botão de fechar, clicando fora do conteúdo ou pressionando `Escape`. Ao fechar, os formulários são limpos e as mensagens de erro removidas. |
 | 📱 **Layout responsivo** | Grade que se adapta à largura da tela, com ajustes específicos para telas de até 544 px. |
 | ♿ **Acessibilidade básica** | HTML semântico, `lang="pt-BR"`, texto alternativo nas imagens e `aria-label` em todos os botões de ícone. |
 
@@ -164,12 +165,13 @@ web_project_around_pt/
 ## 🧠 Destaques técnicos
 
 - **Componentização com `<template>`:** o cartão é definido uma única vez no HTML e clonado com `document.importNode`, evitando strings de HTML dentro do JavaScript.
-- **Funções pequenas e com responsabilidade única:** `openModal`, `closeModal`, `fillProfileForm`, `getCardElement`, `renderCard` e os `handle…` de cada evento.
+- **Funções pequenas e com responsabilidade única:** `openModal`, `closeModal`, `clearPopupForm`, `showInputError`, `hideInputError`, `updateSubmitButton`, `fillProfileForm`, `getCardElement`, `renderCard` e os `handle…` de cada evento.
 - **Parâmetros padrão e desestruturação:** `getCardElement({ name = "Lugar sem nome", link = "./images/placeholder.jpg" })` garante um cartão válido mesmo com dados incompletos.
 - **Estado dos modais via classe CSS:** o modificador `popup_is-opened` controla a exibição, mantendo a lógica visual no CSS e o JavaScript enxuto.
+- **Fechamento consistente dos modais:** um único fluxo trata o botão de fechar, o clique no fundo e a tecla `Escape`; ao fechar, limpa os campos e os erros dos formulários.
 - **Delegação por contexto com `closest`:** `event.target.closest(".card").remove()` exclui o cartão certo sem precisar de identificadores.
 - **Grade fluida:** `grid-template-columns: repeat(auto-fit, 282px)` reorganiza as colunas sozinha conforme a largura da janela.
-- **Validação nativa do HTML:** `required` e `type="url"` impedem o envio de formulários inválidos sem nenhum código extra.
+- **Validação dos formulários:** os formulários usam `novalidate` para exibir mensagens junto aos campos com `validationMessage`; `checkValidity()` atualiza o estado do botão de envio conforme todos os campos.
 - **Novos cartões em primeiro lugar:** `container.prepend(...)` coloca a publicação mais recente no topo da galeria.
 
 <p align="right"><a href="#readme-topo">⬆ voltar ao topo</a></p>
